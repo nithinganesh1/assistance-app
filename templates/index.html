@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blind Assistance App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        button {
+            margin: 20px;
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input[type="file"] {
+            margin: 20px;
+            padding: 10px;
+            font-size: 1.2rem;
+        }
+        audio {
+            margin-top: 20px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to the Blind Assistance App</h1>
+
+    <!-- Button for Live Video Feed -->
+    <form action="/start_live" method="POST">
+        <button type="submit">Live Camera Feed</button>
+    </form>
+
+    <!-- Button for Image Upload -->
+    <form action="/upload_image" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image_file" accept="image/*" required>
+        <button type="submit">Upload Image</button>
+    </form>
+
+    <!-- Additional Camera Option -->
+    <form action="/start_camera" method="POST">
+        <button type="submit">Camera Mode</button>
+    </form>
+
+    <!-- Audio player for detected objects -->
+    {% if audio_file %}
+        <audio id="audioPlayer" controls autoplay>
+            <source src="{{ url_for('static', filename=audio_file) }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    {% else %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Camera Feed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        img {
+            border: 5px solid #ccc;
+            border-radius: 10px;
+            max-width: 640px; /* Ensures the video fits nicely within the frame */
+            height: auto;
+            box-shadow: 0px 0px 10px #888;
+        }
+        audio {
+            margin-top: 20px;
+            width: 300px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Live Camera Feed</h1>
+
+    <!-- Live video feed -->
+    <img src="{{ url_for('video_feed') }}" alt="Live Camera Feed">
+
+    <!-- Audio player for detected objects -->
+    <audio id="audioPlayer" controls autoplay>
+        <source src="{{ url_for('static', filename='audio/output.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Button to stop live feed (optional) -->
+    <form action="/stop_live" method="POST">
+        <button type="submit">Stop Live Feed</button>
+    </form>
+
+    <script>
+        // Function to reload the audio file dynamically every few seconds
+        function reloadAudio() {
+            var audio = document.getElementById("audioPlayer");
+            audio.src = "{{ url_for('static', filename='audio/output.mp3') }}" + "?t=" + new Date().getTime();  // Avoid caching
+            audio.load();
+            audio.play();
+        }
+
+        // Reload the audio every 5 seconds 
+        setInterval(reloadAudio, 5000);
+    </script>
+
+</body>
+</html>
